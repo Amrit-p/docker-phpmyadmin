@@ -1,0 +1,21 @@
+version: '3.8'
+name: phpmyadmin
+services:
+  app:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    container_name: ${COMPOSE_PROJECT_NAME}-app
+    restart: always
+    working_dir: /var/www/phpmyadmin
+    volumes:
+      - ./phpmyadmin:/var/www/phpmyadmin
+  nginx:
+    image: nginx:1.19-alpine
+    container_name: ${COMPOSE_PROJECT_NAME}-nginx
+    restart: always
+    ports:
+      - "4949:80"
+    volumes:
+      - ./phpmyadmin:/var/www/phpmyadmin
+      - ./nginx:/etc/nginx/conf.d
